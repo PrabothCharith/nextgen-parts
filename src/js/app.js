@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+    let jwtUserData = null;
+    let protectedRoutes = ['profile.php', 'index.php', ''];
+    let currentPage = window.location.pathname.split('/').pop();
+    let isProtectedRoute = protectedRoutes.includes(currentPage);
+    let isLoggedIn = false;
+
     $("#register").click(function () {
 
         let email = $("#email").val();
@@ -81,7 +87,7 @@ $(document).ready(function () {
     // });
 
     // validate user with jwt token
-    function validateUser() {
+    async function validateUser() {
 
         let token = '';
 
@@ -90,7 +96,7 @@ $(document).ready(function () {
         }
 
         try {
-            fetch("http://localhost/nextgen-parts/api/auth.php?t=v", {
+            await fetch("http://localhost/nextgen-parts/api/auth.php?t=v", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -101,17 +107,30 @@ $(document).ready(function () {
             }).then((data) => {
 
                 if (data.status === "success") {
+                    isLoggedIn = true;
                     jwtUserData = data.data;
-                    console.log(jwtUserData);
                 } else {
-                    // If the token is invalid, delete the cookie and redirect to login page
-                    document.cookie = "jwt=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    console.log("Invalid JWT token");
+                    isLoggedIn = false;
                 }
 
             });
         } catch (error) {
             console.log("No JWT token found");
+        }
+
+        // If the user is not logged in and the current page is a protected route, redirect to the login page
+        if (!isLoggedIn && isProtectedRoute) {
+
+            // Display the response message using SweetAlert
+            swal({
+                title: "Unauthorized",
+                text: "You are not authorized to access this page.",
+                icon: "warning"
+            });
+
+            setTimeout(() => {
+                window.location.href = "http://localhost/nextgen-parts/login.php";
+            }, 2000);
         }
     }
 
