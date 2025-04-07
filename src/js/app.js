@@ -6,7 +6,7 @@ $(document).ready(function () {
         let password = $("#password").val();
 
         // t = type and r = register
-        fetch("http://localhost/final-project/api/auth.php?t=r", {
+        fetch("http://localhost/nextgen-parts/api/auth.php?t=r", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -29,7 +29,7 @@ $(document).ready(function () {
         let password = $("#password").val();
 
         // t = type and l = login
-        fetch("http://localhost/final-project/api/auth.php?t=l", {
+        fetch("http://localhost/nextgen-parts/api/auth.php?t=l", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -59,7 +59,7 @@ $(document).ready(function () {
                 document.cookie = "jwt=" + token + ";expires=" + expires.toUTCString() + ";path=/";
 
                 // Redirect to the dashboard
-                window.location.href = "http://localhost/final-project/profile.php";
+                window.location.href = "http://localhost/nextgen-parts/profile.php";
 
             }
 
@@ -83,11 +83,8 @@ $(document).ready(function () {
     // validate user with jwt token
     function validateUser() {
 
-        console.log("Validating user...");
-
-
         let token = document.cookie.split('jwt=')[1];
-        fetch("http://localhost/final-project/api/auth.php?t=v", {
+        fetch("http://localhost/nextgen-parts/api/auth.php?t=v", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
