@@ -83,18 +83,36 @@ $(document).ready(function () {
     // validate user with jwt token
     function validateUser() {
 
-        let token = document.cookie.split('jwt=')[1];
-        fetch("http://localhost/nextgen-parts/api/auth.php?t=v", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
-            },
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            console.log(data);
-        });
+        let token = '';
+
+        if (document.cookie.split('jwt=')[1] !== undefined) {
+            token = document.cookie.split('jwt=')[1].split(';')[0];
+        }
+
+        try {
+            fetch("http://localhost/nextgen-parts/api/auth.php?t=v", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+
+                if (data.status === "success") {
+                    jwtUserData = data.data;
+                    console.log(jwtUserData);
+                } else {
+                    // If the token is invalid, delete the cookie and redirect to login page
+                    document.cookie = "jwt=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    console.log("Invalid JWT token");
+                }
+
+            });
+        } catch (error) {
+            console.log("No JWT token found");
+        }
     }
 
     validateUser();
