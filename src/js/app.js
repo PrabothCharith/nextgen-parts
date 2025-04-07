@@ -83,9 +83,6 @@ $(document).ready(function () {
     // validate user with jwt token
     function validateUser() {
 
-        console.log("Validating user...");
-
-
         let token = document.cookie.split('jwt=')[1];
         fetch("http://localhost/final-project/api/auth.php?t=v", {
             method: "GET",
