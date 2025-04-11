@@ -24,6 +24,36 @@ if ($action == 'i') {
     $name = $data['name'];
     $description = $data['description'];
     $price = $data['price'];
+    $images = $data['images'];
+
+    $uploadedImages = [];
+
+    foreach ($images as $image) {
+        // Image path and name generation
+        $imageName = uniqid();
+        $imageExtension = explode('data:image/', $image)[1];
+        $imageExtension = explode(';', $imageExtension)[0];
+        $imagePath = '../../public/uploads/' . $imageName . '.' . $imageExtension;
+
+        // Decode the base64 image
+        $imageData = explode(',', $image);
+        $imageData = base64_decode($imageData[1]);
+
+        // Save the image
+        if (!is_dir('../../public/uploads/')) {
+            mkdir('../../public/uploads/', 0777, true);
+        }
+
+        if (file_put_contents($imagePath, $imageData)) {
+            $uploadedImages[] = $imagePath;
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Failed to upload image'
+            ]);
+            exit();
+        }
+    }
 
     echo json_encode([
         'status' => 'success',
@@ -31,7 +61,8 @@ if ($action == 'i') {
         'data' => [
             'name' => $name,
             'description' => $description,
-            'price' => $price
+            'price' => $price,
+            'images' => $uploadedImages
         ]
     ]);
 }

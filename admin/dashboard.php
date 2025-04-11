@@ -41,6 +41,11 @@
                 </div>
 
                 <!-- Product Image -->
+                <div class="w-full flex flex-col justify-start">
+                    <label for="pImage" class="font-semibold">Product Image</label>
+                    <input type="file" name="image" id="pImage" placeholder="Product Image" multiple
+                        class="w-full h-10 border-2 border-gray-300 rounded-md p-2 mx-auto block">
+                </div>
             </div>
 
             <button class="h-10 bg-blue-500 text-white rounded-md mt-5 hover:bg-blue-600 transition duration-300 w-fit px-10 mx-auto" id="pSubmitBtn">
@@ -59,7 +64,8 @@
             let productDetails = {
                 name: '',
                 description: '',
-                price: ''
+                price: '',
+                images: []
             }
 
             // Method 1
@@ -75,12 +81,25 @@
 
             $('#pSubmitBtn').click(async () => {
 
+                productDetails = {
+                    name: '',
+                    description: '',
+                    price: '',
+                    images: []
+                }
+
                 // Method 2
                 productDetails.name = $('#pName').val();
                 productDetails.description = $('#pDescription').val();
                 productDetails.price = $('#pPrice').val();
+                let imageData = $('#pImage')[0].files;
 
-                const result = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=i', {
+                // Convert image data to base64
+                let convertedImages = await imageConvertor(imageData);
+                productDetails.images = convertedImages;
+                console.log(productDetails);
+
+                const result = await fetch('http://localhost:3000/admin/api/product_manage.php?t=i', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -89,6 +108,29 @@
                 })
 
             })
+
+            async function imageConvertor(imageData) {
+                let convertedImages = [];
+                for (let i = 0; i < imageData.length; i++) {
+                    const file = imageData[i];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function() {
+                        convertedImages.push(reader.result);
+                    }
+                }
+                
+                // Wait for all images to be converted
+                await new Promise((resolve) => {
+                    const interval = setInterval(() => {
+                        if (convertedImages.length === imageData.length) {
+                            clearInterval(interval);
+                            resolve();
+                        }
+                    }, 100);
+                });
+                return convertedImages;
+            }
 
         });
     </script>
