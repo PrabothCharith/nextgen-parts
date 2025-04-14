@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Your Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./src/css/output.css">
 </head>
 
@@ -88,42 +89,58 @@
                 </div>
 
                 <!-- Body -->
-                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3">
-
-                    <?php
-
-                    for ($i = 0; $i < 30; $i++) {
-                    ?>
-
-                        <!-- Product Card -->
-                        <div class="w-full shadow-sm rounded-lg p-2 flex flex-col border">
-
-                            <!-- Product Image -->
-                            <img src="https://images.pexels.com/photos/31352325/pexels-photo-31352325/free-photo-of-warm-indoor-scene-with-potted-plants-and-shadows.jpeg"
-                                alt="Product Image" class="w-full aspect-video object-cover rounded-lg">
-
-                            <!-- Product Details -->
-                            <div class="grid grid-cols-2 mt-2">
-                                <p class="text-lg col-span-full">Product Name here</p>
-
-                                <p>Rs. 100</p>
-                                <button>Cart</button>
-
-                            </div>
-
-                        </div>
-
-                    <?php
-                    }
-
-                    ?>
-
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3" id="productContainer">
+                    <!-- Product Cards will be dynamically inserted here -->
                 </div>
 
             </div>
         </div>
     </div>
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=f');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success' && data.data && data.data.length > 0) {
+                        const products = data.data;
+                        const productContainer = $('#productContainer');
+                        productContainer.empty(); // Clear existing products
+
+                        products.forEach(product => {
+                            const productCard = `
+                                <div class="w-full shadow-sm rounded-lg p-2 flex flex-col border cursor-pointer hover:shadow-lg transition duration-300 ease-in-out" onclick="window.location.href='view.php?id=${product.id}'">
+                                    <img src="${product.images[0]}" alt="${product.name}" class="w-full aspect-video object-cover rounded-lg">
+                                    <div class="grid grid-cols-2 mt-2">
+                                        <p class="text-lg col-span-full">${product.name}</p>
+                                        <p>Rs. ${product.price}</p>
+                                        <button class="bg-blue-500 text-white p-2 rounded-lg">Add to Cart</button>
+                                    </div>
+                                </div>
+                            `;
+                            productContainer.append(productCard);
+                        });
+                    } else {
+                        const productContainer = $('#productContainer');
+                        productContainer.empty(); // Clear existing products
+                        productContainer.append('<p class="text-center text-gray-500">No products found.</p>');
+                        console.error('Error fetching products:', data.message);
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                }
+            }
+
+            fetchProducts();
+
+        });
+    </script>
 </body>
 
 </html>
