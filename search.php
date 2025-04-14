@@ -89,25 +89,7 @@
 
                 <!-- Body -->
                 <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3" id="productContainer">
-
-                        <!-- Product Card -->
-                        <div class="w-full shadow-sm rounded-lg p-2 flex flex-col border">
-
-                            <!-- Product Image -->
-                            <img src="https://images.pexels.com/photos/31352325/pexels-photo-31352325/free-photo-of-warm-indoor-scene-with-potted-plants-and-shadows.jpeg"
-                                alt="Product Image" class="w-full aspect-video object-cover rounded-lg">
-
-                            <!-- Product Details -->
-                            <div class="grid grid-cols-2 mt-2">
-                                <p class="text-lg col-span-full">Product Name here</p>
-
-                                <p>Rs. 100</p>
-                                <button>Cart</button>
-
-                            </div>
-
-                        </div>
-
+                    <!-- Product Cards will be dynamically inserted here -->
                 </div>
 
             </div>
