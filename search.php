@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Your Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./src/css/output.css">
 </head>
 
@@ -113,7 +114,7 @@
 
                         products.forEach(product => {
                             const productCard = `
-                                <div class="w-full shadow-sm rounded-lg p-2 flex flex-col border">
+                                <div class="w-full shadow-sm rounded-lg p-2 flex flex-col border cursor-pointer hover:shadow-lg transition duration-300 ease-in-out" onclick="window.location.href='view.php?id=${product.id}'">
                                     <img src="${product.images[0]}" alt="${product.name}" class="w-full aspect-video object-cover rounded-lg">
                                     <div class="grid grid-cols-2 mt-2">
                                         <p class="text-lg col-span-full">${product.name}</p>
