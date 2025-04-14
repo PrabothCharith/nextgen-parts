@@ -99,7 +99,7 @@
                 productDetails.images = convertedImages;
                 console.log(productDetails);
 
-                const result = await fetch('http://localhost:3000/admin/api/product_manage.php?t=i', {
+                const result = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=i', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
