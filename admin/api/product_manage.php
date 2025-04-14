@@ -14,8 +14,17 @@ $data = json_decode(file_get_contents('php://input'), true);
 require '../../utils/db.php';
 
 if ($action == 'f') {
-    $query = "SELECT * FROM products";
-    $stmt = Database::search($query);
+
+    $productId = $_GET['id'] ?? null;
+
+    if ($productId) {
+        $query = "SELECT * FROM products WHERE id = :id";
+        $stmt = Database::search($query, [':id' => $productId]);
+    } else {
+        // Fetch all products
+        $query = "SELECT * FROM products";
+        $stmt = Database::search($query);
+    }
 
     if (count($stmt) == 0) {
         echo json_encode([
