@@ -19,6 +19,8 @@ if (!$data || $data == null || empty($data)) {
     exit();
 }
 
+require '../../utils/db.php';
+
 if ($action == 'i') {
 
     $name = $data['name'];
@@ -57,14 +59,26 @@ if ($action == 'i') {
         }
     }
 
+    // Insert product into database
+    $query = "INSERT INTO products (name, description, price, images) VALUES (:name, :description, :price, :images)";
+    $stmt = Database::iud($query, [
+        ':name' => $name,
+        ':description' => $description,
+        ':price' => $price,
+        ':images' => json_encode($uploadedImages)
+    ]);
+
+    if (!$stmt) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Failed to add product',
+            'error' => $stmt->errorInfo()
+        ]);
+        exit();
+    }
+
     echo json_encode([
         'status' => 'success',
         'message' => 'Product added successfully',
-        'data' => [
-            'name' => $name,
-            'description' => $description,
-            'price' => $price,
-            'images' => $uploadedImages
-        ]
     ]);
 }
