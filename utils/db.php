@@ -63,4 +63,23 @@ class Database{
             exit();
         }
     }
+
+    public static function search($query, $params = [])
+    {
+        try {
+            $db = new Database();
+            $stmt = $db->conn->prepare($query);
+            $stmt->execute($params);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $db->closeConnection();
+            return $result;
+        } catch (PDOException $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Database query failed',
+                'error' => $e->getMessage()
+            ]);
+            exit();
+        }
+    }
 }
