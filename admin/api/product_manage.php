@@ -44,8 +44,10 @@ if ($action == 'i') {
             mkdir('../../public/uploads/', 0777, true);
         }
 
+        $actualImagePath = 'http://localhost/nextgen-parts/public/uploads/' . $imageName . '.' . $imageExtension;
+
         if (file_put_contents($imagePath, $imageData)) {
-            $uploadedImages[] = $imagePath;
+            $uploadedImages[] = $actualImagePath;
         } else {
             echo json_encode([
                 'status' => 'error',
