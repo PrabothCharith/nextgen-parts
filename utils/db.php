@@ -19,20 +19,48 @@ class Database{
     
     public static function getConnection()
     {
-        $db = new Database();
-        return $db->conn;
+        try {
+            $db = new Database();
+            return $db->conn;
+        } catch (PDOException $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Database connection failed',
+                'error' => $e->getMessage()
+            ]);
+            exit();
+        }
     }
 
     public static function closeConnection()
     {
-        $db = new Database();
-        $db->conn = null;
+        try {
+            $db = new Database();
+            $db->conn = null;
+        } catch (PDOException $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Failed to close database connection',
+                'error' => $e->getMessage()
+            ]);
+            exit();
+        }
     }
     public static function iud($query, $params = [])
     {
-        $db = new Database();
-        $stmt = $db->conn->prepare($query);
-        $stmt->execute($params);
-        return $stmt;
+        try {
+            $db = new Database();
+            $stmt = $db->conn->prepare($query);
+            $stmt->execute($params);
+            $db->closeConnection();
+            return $stmt;
+        } catch (PDOException $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Database query failed',
+                'error' => $e->getMessage()
+            ]);
+            exit();
+        }
     }
 }
