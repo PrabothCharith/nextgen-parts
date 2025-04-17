@@ -193,6 +193,10 @@
 
             $('#searchInput').on('input', function() {
                 filterProducts($(this).val());
+                if ($(this).val() === '') {
+                    allProducts = [];
+                    fetchProducts();
+                }
             });
 
             async function filterProducts (query){
