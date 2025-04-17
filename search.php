@@ -83,7 +83,7 @@
             <div class="w-full 2xl:container mx-auto flex flex-col justify-center items-center gap-y-5">
                 <!-- Search Bar -->
                 <div class="w-full flex gap-2">
-                    <input type="text" placeholder="Search for products"
+                    <input type="text" placeholder="Search for products" id="searchInput"
                         class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <button class="w-fit bg-blue-500 text-white p-2 px-8 rounded-lg">Search</button>
                 </div>
@@ -102,15 +102,16 @@
     <script>
         $(document).ready(function() {
             
-            async function fetchProducts() {
-                try {
-                    const response = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=f');
-                    const data = await response.json();
-                    
-                    if (data.status === 'success' && data.data && data.data.length > 0) {
-                        const products = data.data;
-                        const productContainer = $('#productContainer');
+            let allProducts = [];
+
+            async function setProducts(products) {
+                const productContainer = $('#productContainer');
                         productContainer.empty(); // Clear existing products
+
+                        if (products.length === 0) {
+                            productContainer.append('<p class="text-center text-gray-500">No products found.</p>');
+                            return;
+                        }
 
                         products.forEach(product => {
                             const productCard = `
@@ -125,10 +126,20 @@
                             `;
                             productContainer.append(productCard);
                         });
+                
+            }
+
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=f');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success' && data.data && data.data.length > 0) {
+                        const products = data.data;
+                        allProducts = products; 
+                        setProducts(products); // Set initial products
                     } else {
-                        const productContainer = $('#productContainer');
                         productContainer.empty(); // Clear existing products
-                        productContainer.append('<p class="text-center text-gray-500">No products found.</p>');
                         console.error('Error fetching products:', data.message);
                     }
 
@@ -138,6 +149,18 @@
             }
 
             fetchProducts();
+
+            $('#searchInput').on('input', function() {
+                filterProducts($(this).val());
+            });
+
+            async function filterProducts (query){
+                const filteredProducts = allProducts.filter(product => {
+                    return product.name.toLowerCase().includes(query.toLowerCase());
+                });
+
+                setProducts(filteredProducts);
+            }
 
         });
     </script>
