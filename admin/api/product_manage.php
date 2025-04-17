@@ -16,10 +16,14 @@ require '../../utils/db.php';
 if ($action == 'f') {
 
     $productId = $_GET['id'] ?? null;
+    $q = $_GET['q'] ?? null;
 
     if ($productId) {
         $query = "SELECT * FROM products WHERE id = :id";
         $stmt = Database::search($query, [':id' => $productId]);
+    } else if ($q) {
+        $query = "SELECT * FROM products WHERE `name` LIKE :q OR `description` LIKE :q";
+        $stmt = Database::search($query, [':q' => '%' . $q . '%']);
     } else {
         // Fetch all products
         $query = "SELECT * FROM products";

@@ -85,7 +85,7 @@
                 <div class="w-full flex gap-2">
                     <input type="text" placeholder="Search for products" id="searchInput"
                         class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <button class="w-fit bg-blue-500 text-white p-2 px-8 rounded-lg">Search</button>
+                    <button class="w-fit bg-blue-500 text-white p-2 px-8 rounded-lg" id="advancedSearchTrigger">Search</button>
                 </div>
 
                 <!-- Body -->
@@ -202,6 +202,27 @@
 
                 filteredProducts = filter;
                 handlePaginations();
+            }
+
+            $('#advancedSearchTrigger').click(async () => {
+                advancedSearch();
+            });
+
+            async function advancedSearch (){
+                let query = $('#searchInput').val();
+
+                const response = await fetch(`http://localhost/nextgen-parts/admin/api/product_manage.php?t=f&q=${query}`);
+                const data = await response.json();
+
+                if (data.status === 'success' && data.data && data.data.length > 0) {
+                    const products = data.data;
+                    allProducts = products; 
+                    filterProducts('');
+                } else {
+                    productContainer.empty(); // Clear existing products
+                    console.error('Error fetching products:', data.message);
+                }
+                
             }
 
         });
