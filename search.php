@@ -93,6 +93,15 @@
                     <!-- Product Cards will be dynamically inserted here -->
                 </div>
 
+                <!-- Pagination -->
+                 <div class="w-full flex justify-center items-center mt-5">
+                    <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Previous</button>
+                    <div class="w-fit flex justify-center items-center mt-5" id="pagination">
+                        <!-- Pagination will be dynamically inserted here -->
+                    </div>
+                    <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Next</button>
+                 </div>
+
             </div>
         </div>
     </div>
@@ -103,6 +112,7 @@
         $(document).ready(function() {
             
             let allProducts = [];
+            let itemsPerPage = 2;
 
             async function setProducts(products) {
                 const productContainer = $('#productContainer');
@@ -138,6 +148,7 @@
                         const products = data.data;
                         allProducts = products; 
                         setProducts(products); // Set initial products
+                        handlePaginations(); // Handle pagination
                     } else {
                         productContainer.empty(); // Clear existing products
                         console.error('Error fetching products:', data.message);
@@ -149,6 +160,36 @@
             }
 
             fetchProducts();
+            
+            async function handlePaginations(currentPage) {
+                
+                let totalPages = allProducts.length;
+                if (totalPages === 0) {
+                    $('#pagination').empty(); // Clear pagination if no products
+                    return;
+                }
+
+                if (!currentPage) {
+                    currentPage = 1; // Default to the first page
+                }
+
+                const pagination = $('#pagination');
+                pagination.empty(); // Clear existing pagination
+            
+                let paginationCount = 0;
+                paginationCount = Math.ceil(totalPages / itemsPerPage);
+
+                for (let i = 1; i <= paginationCount; i++) {
+                    const pageButton = $(`<button class="bg-blue-500 text-white p-2 px-4 rounded-lg">${i}</button>`);
+                    pageButton.on('click', function() {
+                        handlePaginations(i); 
+                    });
+                    pagination.append(pageButton);
+                }
+
+                setProducts(allProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+
+            }
 
             $('#searchInput').on('input', function() {
                 filterProducts($(this).val());
