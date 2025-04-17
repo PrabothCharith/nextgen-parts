@@ -112,6 +112,7 @@
         $(document).ready(function() {
             
             let allProducts = [];
+            let filteredProducts = [];
             let itemsPerPage = 2;
 
             async function setProducts(products) {
@@ -147,8 +148,7 @@
                     if (data.status === 'success' && data.data && data.data.length > 0) {
                         const products = data.data;
                         allProducts = products; 
-                        setProducts(products); // Set initial products
-                        handlePaginations(); // Handle pagination
+                        filterProducts('');
                     } else {
                         productContainer.empty(); // Clear existing products
                         console.error('Error fetching products:', data.message);
@@ -162,8 +162,8 @@
             fetchProducts();
             
             async function handlePaginations(currentPage) {
-                
-                let totalPages = allProducts.length;
+
+                let totalPages = filteredProducts.length;
                 if (totalPages === 0) {
                     $('#pagination').empty(); // Clear pagination if no products
                     return;
@@ -187,7 +187,7 @@
                     pagination.append(pageButton);
                 }
 
-                setProducts(allProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+                setProducts(filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
 
             }
 
@@ -196,11 +196,12 @@
             });
 
             async function filterProducts (query){
-                const filteredProducts = allProducts.filter(product => {
+               const filter = allProducts.filter(product => {
                     return product.name.toLowerCase().includes(query.toLowerCase());
                 });
 
-                setProducts(filteredProducts);
+                filteredProducts = filter;
+                handlePaginations();
             }
 
         });
