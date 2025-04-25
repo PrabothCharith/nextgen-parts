@@ -107,6 +107,14 @@
                     body: JSON.stringify(productDetails)
                 })
 
+            const date = await result.json();
+   
+            if (date.status === 'success') {
+                swal("Success!", "Product Inserted Successfully!", "success");
+            } else {
+                swal("Error!", "Product Insertion Failed!", "error");
+            }
+
             })
 
             async function imageConvertor(imageData) {

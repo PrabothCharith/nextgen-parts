@@ -83,15 +83,24 @@
             <div class="w-full 2xl:container mx-auto flex flex-col justify-center items-center gap-y-5">
                 <!-- Search Bar -->
                 <div class="w-full flex gap-2">
-                    <input type="text" placeholder="Search for products"
+                    <input type="text" placeholder="Search for products" id="searchInput"
                         class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <button class="w-fit bg-blue-500 text-white p-2 px-8 rounded-lg">Search</button>
+                    <button class="w-fit bg-blue-500 text-white p-2 px-8 rounded-lg" id="advancedSearchTrigger">Search</button>
                 </div>
 
                 <!-- Body -->
                 <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3" id="productContainer">
                     <!-- Product Cards will be dynamically inserted here -->
                 </div>
+
+                <!-- Pagination -->
+                 <div class="w-full flex justify-center items-center mt-5">
+                    <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Previous</button>
+                    <div class="w-fit flex justify-center items-center mt-5" id="pagination">
+                        <!-- Pagination will be dynamically inserted here -->
+                    </div>
+                    <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Next</button>
+                 </div>
 
             </div>
         </div>
@@ -102,15 +111,18 @@
     <script>
         $(document).ready(function() {
             
-            async function fetchProducts() {
-                try {
-                    const response = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=f');
-                    const data = await response.json();
-                    
-                    if (data.status === 'success' && data.data && data.data.length > 0) {
-                        const products = data.data;
-                        const productContainer = $('#productContainer');
+            let allProducts = [];
+            let filteredProducts = [];
+            let itemsPerPage = 2;
+
+            async function setProducts(products) {
+                const productContainer = $('#productContainer');
                         productContainer.empty(); // Clear existing products
+
+                        if (products.length === 0) {
+                            productContainer.append('<p class="text-center text-gray-500">No products found.</p>');
+                            return;
+                        }
 
                         products.forEach(product => {
                             const productCard = `
@@ -125,10 +137,20 @@
                             `;
                             productContainer.append(productCard);
                         });
+                
+            }
+
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=f');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success' && data.data && data.data.length > 0) {
+                        const products = data.data;
+                        allProducts = products; 
+                        filterProducts('');
                     } else {
-                        const productContainer = $('#productContainer');
                         productContainer.empty(); // Clear existing products
-                        productContainer.append('<p class="text-center text-gray-500">No products found.</p>');
                         console.error('Error fetching products:', data.message);
                     }
 
@@ -138,6 +160,74 @@
             }
 
             fetchProducts();
+            
+            async function handlePaginations(currentPage) {
+
+                let totalPages = filteredProducts.length;
+                if (totalPages === 0) {
+                    $('#pagination').empty(); // Clear pagination if no products
+                    return;
+                }
+
+                if (!currentPage) {
+                    currentPage = 1; // Default to the first page
+                }
+
+                const pagination = $('#pagination');
+                pagination.empty(); // Clear existing pagination
+            
+                let paginationCount = 0;
+                paginationCount = Math.ceil(totalPages / itemsPerPage);
+
+                for (let i = 1; i <= paginationCount; i++) {
+                    const pageButton = $(`<button class="bg-blue-500 text-white p-2 px-4 rounded-lg">${i}</button>`);
+                    pageButton.on('click', function() {
+                        handlePaginations(i); 
+                    });
+                    pagination.append(pageButton);
+                }
+
+                setProducts(filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+
+            }
+
+            $('#searchInput').on('input', function() {
+                filterProducts($(this).val());
+                if ($(this).val() === '') {
+                    allProducts = [];
+                    fetchProducts();
+                }
+            });
+
+            async function filterProducts (query){
+               const filter = allProducts.filter(product => {
+                    return product.name.toLowerCase().includes(query.toLowerCase());
+                });
+
+                filteredProducts = filter;
+                handlePaginations();
+            }
+
+            $('#advancedSearchTrigger').click(async () => {
+                advancedSearch();
+            });
+
+            async function advancedSearch (){
+                let query = $('#searchInput').val();
+
+                const response = await fetch(`http://localhost/nextgen-parts/admin/api/product_manage.php?t=f&q=${query}`);
+                const data = await response.json();
+
+                if (data.status === 'success' && data.data && data.data.length > 0) {
+                    const products = data.data;
+                    allProducts = products; 
+                    filterProducts('');
+                } else {
+                    productContainer.empty(); // Clear existing products
+                    console.error('Error fetching products:', data.message);
+                }
+                
+            }
 
         });
     </script>
