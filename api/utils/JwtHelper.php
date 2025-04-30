@@ -1,13 +1,12 @@
 <?php
 
 use Dotenv\Dotenv;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\JWT;
+use Firebase\JWT\SignatureInvalidException;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
-
-use Firebase\JWT\JWT;
-use Firebase\JWT\ExpiredException;
-use Firebase\JWT\SignatureInvalidException;
 
 class JwtHelper
 {

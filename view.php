@@ -10,13 +10,13 @@
 </head>
 <body>
 
-    <div class="bg-white bg-opacity-90 p-5 rounded-lg shadow-lg max-w-2xl mx-auto mt-10">
-        <a href="index.php" class="text-blue-500 hover:text-blue-700">Back to Products</a>
-    </div>
-    
+<div class="bg-white bg-opacity-90 p-5 rounded-lg shadow-lg max-w-2xl mx-auto mt-10">
+    <a href="index.php" class="text-blue-500 hover:text-blue-700">Back to Products</a>
+</div>
+
 <div>
     <h1 class="text-3xl font-bold text-center mt-10">Product View</h1>
-    
+
     <!-- Product Images-->
     <div class="mt-5 w-full px-10 max-w-7xl mx-auto" id="product_images">
         <!-- Loop through images and display them -->
@@ -37,8 +37,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
-    $(document).ready(function() {
-        
+    $(document).ready(function () {
+
         $('#product_images').slick({
             dots: true,
             infinite: true,
@@ -46,24 +46,24 @@
             slidesToShow: 3,
             autoplay: true,
             responsive: [
-    {
-      breakpoint: 1500,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2
-      }
-    },
-    {
-      breakpoint: 1000,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
-      }
-    }]
+                {
+                    breakpoint: 1500,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 1000,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }]
         });
 
-    async function fetchProduct() {
-        const productImages =  $('#product_images');
+        async function fetchProduct() {
+            const productImages = $('#product_images');
             const productName = $('#product_name');
             const productPrice = $('#product_price');
             const productDescription = $('#product_description');
@@ -87,15 +87,15 @@
 
                 // Display product images
                 product.images.forEach(image => {
-                    $('#product_images').slick('slickAdd', 
+                    $('#product_images').slick('slickAdd',
                         '<div class="w-full bg-center aspect-video bg-cover bg-no-repeat rounded-lg" style="background-image: url(' + image + ');"></div>'
                     );
                 });
             } else {
                 swal("Error", "Product not found", "error");
             }
-    }
-    
+        }
+
         fetchProduct();
 
     });

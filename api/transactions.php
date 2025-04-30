@@ -8,13 +8,13 @@ $req_method = $_SERVER['REQUEST_METHOD'];
 
 // check the action is POST
 if ($req_method == 'POST') {
-    
+
     $userId = $data['user_id'] ?? null;
     $products = $data['products'] ?? null;
 
     $totalPrice = 0;
 
-    if( !$userId || $userId == null || empty($userId)) {
+    if (!$userId || $userId == null || empty($userId)) {
         echo json_encode([
             'status' => 'error',
             'message' => 'No user ID provided'
@@ -28,7 +28,7 @@ if ($req_method == 'POST') {
         exit();
     } else {
         // Loop through the products and calculate the total price
-        
+
         foreach ($products as $product) {
             $productId = $product['id'] ?? null;
             $quantity = $product['quantity'] ?? null;
@@ -53,7 +53,7 @@ if ($req_method == 'POST') {
                         'message' => 'Product not found'
                     ]);
                     exit();
-                } 
+                }
 
                 $productPrice = $stmt[0]['price'];
 
@@ -101,7 +101,7 @@ if ($req_method == 'POST') {
                     'message' => 'Failed to create transaction details'
                 ]);
                 exit();
-            }            
+            }
         }
 
         echo json_encode([

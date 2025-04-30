@@ -9,7 +9,8 @@ $dotenv->load();
 
 
 // Make a database connection as a class to use in other files
-class Database{
+class Database
+{
     private $conn;
 
     public function __construct()
@@ -17,7 +18,7 @@ class Database{
         $this->conn = new PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-    
+
     public static function getConnection()
     {
         try {
@@ -33,20 +34,6 @@ class Database{
         }
     }
 
-    public static function closeConnection()
-    {
-        try {
-            $db = new Database();
-            $db->conn = null;
-        } catch (PDOException $e) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Failed to close database connection',
-                'error' => $e->getMessage()
-            ]);
-            exit();
-        }
-    }
     public static function iud($query, $params = [])
     {
         try {
@@ -59,6 +46,21 @@ class Database{
             echo json_encode([
                 'status' => 'error',
                 'message' => 'Database query failed',
+                'error' => $e->getMessage()
+            ]);
+            exit();
+        }
+    }
+
+    public static function closeConnection()
+    {
+        try {
+            $db = new Database();
+            $db->conn = null;
+        } catch (PDOException $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Failed to close database connection',
                 'error' => $e->getMessage()
             ]);
             exit();

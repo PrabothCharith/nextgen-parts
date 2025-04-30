@@ -43,7 +43,7 @@ if ($action == 'f') {
         ]);
         exit();
     }
-    
+
     // Decode the images from JSON
     $stmt = array_map(function ($product) {
         $product['images'] = json_decode($product['images'], true);
@@ -62,7 +62,7 @@ if ($action == 'f') {
             'message' => 'No data provided'
         ]);
         exit();
-    } else{
+    } else {
         if ($action == 'i') {
 
             $name = $data['name'];
