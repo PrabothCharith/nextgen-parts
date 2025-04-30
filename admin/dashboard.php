@@ -54,6 +54,7 @@
                     multiple
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
             >
+            <div id="imagePreview" class="flex flex-wrap gap-4 mt-4"></div>
         </div>
 
         <div class="flex justify-center">
@@ -71,24 +72,39 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        let productDetails = {
-            name: '',
-            description: '',
-            price: '',
-            images: []
+        let images = [];
+
+        $("#pImage").change(async function () {
+            const files = $(this)[0].files;
+            const convertedImages = await imageConvertor(files);
+            images = images.concat(convertedImages);
+            renderImages();
+        });
+
+        function renderImages() {
+            $("#imagePreview").empty();
+            images.forEach((imgSrc, git index) => {
+                $("#imagePreview").append(`
+                    <div class="relative w-24 h-24">
+                        <img src="${imgSrc}" class="w-full h-full object-cover rounded-md"  alt="Product Image ${index + 1}">
+                        <button class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center" onclick="removeImage(${index})">×</button>
+                    </div>
+                `);
+            });
+        }
+
+        window.removeImage = function (index) {
+            images.splice(index, 1);
+            renderImages();
         }
 
         $('#pSubmitBtn').click(async () => {
-            productDetails = {
+            const productDetails = {
                 name: $('#pName').val(),
                 description: $('#pDescription').val(),
                 price: $('#pPrice').val(),
-                images: []
+                images: images
             }
-
-            let imageData = $('#pImage')[0].files;
-            let convertedImages = await imageConvertor(imageData);
-            productDetails.images = convertedImages;
 
             const result = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=i', {
                 method: 'POST',
@@ -102,6 +118,12 @@
 
             if (data.status === 'success') {
                 swal("Success!", "Product Inserted Successfully!", "success");
+                $('#pName').val('');
+                $('#pDescription').val('');
+                $('#pPrice').val('');
+                $('#pImage').val('');
+                images = [];
+                renderImages();
             } else {
                 swal("Error!", "Product Insertion Failed!", "error");
             }
@@ -130,3 +152,4 @@
     });
 </script>
 </body>
+</html>
