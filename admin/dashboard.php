@@ -102,12 +102,17 @@
 
             <!--Dashboard Main Content-->
             <div class="w-full h-full bg-red-100 hidden" id="home">
-                Dashboard Content
+                <div class="flex flex-col w-full h-full justify-center items-center p-4 bg-white">
+                    <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+                    <p class="text-gray-700">Welcome to the admin dashboard!</p>
+                </div>
             </div>
 
             <!--Users-->
-            <div class="w-full h-full bg-red-200 hidden" id="users">
-                Users Content
+            <div class="w-full h-full hidden" id="users">
+                <div class="flex items-center justify-center">
+                    <?php require_once 'components/users/manage_users.php'; ?>
+                </div>
             </div>
 
             <!--Products-->
