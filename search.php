@@ -266,7 +266,8 @@
                         name: product.name,
                         price: product.price,
                         quantity: 1,
-                        image: product.images[0]
+                        image: product.images[0],
+                        description: product.description,
                     });
                 }
             }
