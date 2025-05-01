@@ -140,8 +140,27 @@
             </div>
 
             <!--Orders-->
-            <div class="w-full h-full bg-red-400 hidden" id="orders">
-                Orders Content
+            <div class="w-full h-full hidden" id="orders">
+                <div class="w-full h-fit flex items-center justify-center p-10 gap-10 sticky bg-white top-0">
+                    <button
+                        class="w-full flex items-center justify-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                        id="ordersAddBtn">
+                        <i class="bi bi-plus-circle"></i>
+                        <span class="ml-2">Add Orders</span>
+                    </button>
+                    <button
+                        class="w-full flex items-center justify-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                        id="ordersManageBtn">
+                        <i class="bi bi-pencil-square"></i>
+                        <span class="ml-2">Manage Orders</span>
+                    </button>
+                </div>
+                <div id="ordersAddContent" class="flex items-center justify-center">
+                    <?php require_once 'components/orders/add_orders.php'; ?>
+                </div>
+                <div id="ordersManageContent" class="flex items-center justify-center">
+                    <?php require_once 'components/orders/manage_orders.php'; ?>
+                </div>
             </div>
 
             <!--Contact Forms-->
@@ -161,11 +180,16 @@
         // Defaults
         // Show the home page by default
         function defaultPage() {
-            $('#products').show();
+            $('#home').show();
             $('#productsAddBtn').addClass('bg-gray-100');
             $('#productsUpdateBtn').removeClass('bg-gray-100');
             $('#productsUpdateContent').hide();
             $('#productsAddContent').show();
+
+            $('#ordersAddBtn').addClass('bg-gray-100');
+            $('#ordersManageBtn').removeClass('bg-gray-100');
+            $('#ordersManageContent').hide();
+            $('ordersAddContent').show();
         }
         defaultPage();
 
@@ -199,6 +223,21 @@
             $('#productsAddBtn').removeClass('bg-gray-100');
             $('#productsAddContent').hide();
             $('#productsUpdateContent').show();
+        });
+
+        // Handle Add Orders button click
+        $('#ordersAddBtn').on('click', function() {
+            $(this).addClass('bg-gray-100');
+            $('#ordersManageBtn').removeClass('bg-gray-100');
+            $('#ordersManageContent').hide();
+            $('#ordersAddContent').show();
+        });
+        // Handle Manage Orders button click
+        $('#ordersManageBtn').on('click', function() {
+            $(this).addClass('bg-gray-100');
+            $('#ordersAddBtn').removeClass('bg-gray-100');
+            $('#ordersAddContent').hide();
+            $('#ordersManageContent').show();
         });
 
     });
