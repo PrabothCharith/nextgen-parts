@@ -11,107 +11,109 @@
 
 <body>
 
-<div class="w-full flex gap-2 relative">
+    <div class="w-full flex gap-2 relative">
 
-    <!-- Filter Sidebar -->
-    <div class="w-full min-w-72 max-w-96 h-screen sticky top-0 left-0 hidden lg:block p-8 border-r-2">
-        <div class="w-full h-full flex flex-col justify-center items-center">
+        <!-- Filter Sidebar -->
+        <div class="w-full min-w-72 max-w-96 h-screen sticky top-0 left-0 hidden lg:block p-8 border-r-2">
+            <div class="w-full h-full flex flex-col justify-center items-center">
 
-            <!-- Filter Title -->
-            <div class="w-full flex justify-between items-center">
-                <p class="text-lg font-semibold">Filter</p>
-                <button class="text-gray-500 hover:text-red-500">Clear All</button>
-            </div>
-
-            <!-- Sort By -->
-            <div class="w-full p-2 py-7 border-b">
-                <p class="text-lg font-semibold">Sort By</p>
-                <select class="w-full p-2 border border-gray-300 rounded-lg mt-2">
-                    <option value="relevance">Relevance</option>
-                    <option value="price-low-to-high">Price: Low to High</option>
-                    <option value="price-high-to-low">Price: High to Low</option>
-                    <option value="newest">Newest Arrivals</option>
-                </select>
-            </div>
-
-            <!-- Price Range -->
-            <div class="w-full p-2 py-71 border-b">
-                <p class="text-lg font-semibold">Price Range</p>
-                <div class="w-full flex flex-col gap-2 mt-2">
-                    <input type="range" min="0" max="1000" value="500" class="w-full">
-                    <p>Rs. 0 - Rs. 1000</p>
+                <!-- Filter Title -->
+                <div class="w-full flex justify-between items-center">
+                    <p class="text-lg font-semibold">Filter</p>
+                    <button class="text-gray-500 hover:text-red-500">Clear All</button>
                 </div>
-            </div>
 
-            <!-- Availability -->
-            <div class="w-full p-2 py-7 border-b">
-                <p class="text-lg font-semibold">Availability</p>
-                <div class="w-full flex gap-2 mt-2">
-                    <input type="checkbox" id="in-stock" name="availability" value="in-stock">
-                    <label for="in-stock">In Stock</label>
+                <!-- Sort By -->
+                <div class="w-full p-2 py-7 border-b">
+                    <p class="text-lg font-semibold">Sort By</p>
+                    <select class="w-full p-2 border border-gray-300 rounded-lg mt-2">
+                        <option value="relevance">Relevance</option>
+                        <option value="price-low-to-high">Price: Low to High</option>
+                        <option value="price-high-to-low">Price: High to Low</option>
+                        <option value="newest">Newest Arrivals</option>
+                    </select>
                 </div>
+
+                <!-- Price Range -->
+                <div class="w-full p-2 py-71 border-b">
+                    <p class="text-lg font-semibold">Price Range</p>
+                    <div class="w-full flex flex-col gap-2 mt-2">
+                        <input type="range" min="0" max="1000" value="500" class="w-full">
+                        <p>Rs. 0 - Rs. 1000</p>
+                    </div>
+                </div>
+
+                <!-- Availability -->
+                <div class="w-full p-2 py-7 border-b">
+                    <p class="text-lg font-semibold">Availability</p>
+                    <div class="w-full flex gap-2 mt-2">
+                        <input type="checkbox" id="in-stock" name="availability" value="in-stock">
+                        <label for="in-stock">In Stock</label>
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="w-full p-2 py-7 border-b">
+                    <p class="text-lg font-semibold">Category</p>
+                    <select class="w-full p-2 border border-gray-300 rounded-lg mt-2">
+                        <option value="all">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="home-appliances">Home Appliances</option>
+                    </select>
+                </div>
+
+
+                <!-- Brand -->
+                <div class="w-full p-2 py-7 border-b">
+                    <p class="text-lg font-semibold">Brand</p>
+                    <select class="w-full p-2 border border-gray-300 rounded-lg mt-2">
+                        <option value="all">All Brands</option>
+                        <option value="brand-a">Brand A</option>
+                        <option value="brand-b">Brand B</option>
+                        <option value="brand-c">Brand C</option>
+                    </select>
+                </div>
+
+
             </div>
+        </div>
 
-            <!-- Category -->
-            <div class="w-full p-2 py-7 border-b">
-                <p class="text-lg font-semibold">Category</p>
-                <select class="w-full p-2 border border-gray-300 rounded-lg mt-2">
-                    <option value="all">All Categories</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="home-appliances">Home Appliances</option>
-                </select>
+        <div class="w-full py-5">
+            <div class="w-full 2xl:container mx-auto flex flex-col justify-center items-center gap-y-5">
+                <!-- Search Bar -->
+                <div class="w-full flex gap-2">
+                    <input type="text" placeholder="Search for products" id="searchInput"
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button class="w-fit bg-blue-500 text-white p-2 px-8 rounded-lg"
+                        id="advancedSearchTrigger">Search</button>
+                </div>
+
+                <!-- Body -->
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3"
+                    id="productContainer">
+                    <!-- Product Cards will be dynamically inserted here -->
+                </div>
+
+                <!-- Pagination -->
+                <div class="w-full flex justify-center items-center mt-5">
+                    <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Previous</button>
+                    <div class="w-fit flex justify-center items-center mt-5" id="pagination">
+                        <!-- Pagination will be dynamically inserted here -->
+                    </div>
+                    <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Next</button>
+                </div>
+
             </div>
-
-
-            <!-- Brand -->
-            <div class="w-full p-2 py-7 border-b">
-                <p class="text-lg font-semibold">Brand</p>
-                <select class="w-full p-2 border border-gray-300 rounded-lg mt-2">
-                    <option value="all">All Brands</option>
-                    <option value="brand-a">Brand A</option>
-                    <option value="brand-b">Brand B</option>
-                    <option value="brand-c">Brand C</option>
-                </select>
-            </div>
-
-
         </div>
     </div>
 
-    <div class="w-full py-5">
-        <div class="w-full 2xl:container mx-auto flex flex-col justify-center items-center gap-y-5">
-            <!-- Search Bar -->
-            <div class="w-full flex gap-2">
-                <input type="text" placeholder="Search for products" id="searchInput"
-                       class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button class="w-fit bg-blue-500 text-white p-2 px-8 rounded-lg" id="advancedSearchTrigger">Search</button>
-            </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    let allProducts = [];
+    $(document).ready(function() {
 
-            <!-- Body -->
-            <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3" id="productContainer">
-                <!-- Product Cards will be dynamically inserted here -->
-            </div>
-
-            <!-- Pagination -->
-            <div class="w-full flex justify-center items-center mt-5">
-                <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Previous</button>
-                <div class="w-fit flex justify-center items-center mt-5" id="pagination">
-                    <!-- Pagination will be dynamically inserted here -->
-                </div>
-                <button class="bg-blue-500 text-white p-2 px-4 rounded-lg">Next</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-
-        let allProducts = [];
         let filteredProducts = [];
         let itemsPerPage = 2;
 
@@ -131,7 +133,8 @@
                                     <div class="grid grid-cols-2 mt-2">
                                         <p class="text-lg col-span-full">${product.name}</p>
                                         <p>Rs. ${product.price}</p>
-                                        <button class="bg-blue-500 text-white p-2 rounded-lg">Add to Cart</button>
+                                        <button class="bg-blue-500 text-white p-2 rounded-lg"
+                                            onclick="event.stopPropagation(); addToCart(${product.id})">Add to Cart</button>
                                     </div>
                                 </div>
                             `;
@@ -142,7 +145,8 @@
 
         async function fetchProducts() {
             try {
-                const response = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=f');
+                const response = await fetch(
+                    'http://localhost/nextgen-parts/admin/api/product_manage.php?t=f');
                 const data = await response.json();
 
                 if (data.status === 'success' && data.data && data.data.length > 0) {
@@ -180,18 +184,20 @@
             paginationCount = Math.ceil(totalPages / itemsPerPage);
 
             for (let i = 1; i <= paginationCount; i++) {
-                const pageButton = $(`<button class="bg-blue-500 text-white p-2 px-4 rounded-lg">${i}</button>`);
-                pageButton.on('click', function () {
+                const pageButton = $(
+                    `<button class="bg-blue-500 text-white p-2 px-4 rounded-lg">${i}</button>`);
+                pageButton.on('click', function() {
                     handlePaginations(i);
                 });
                 pagination.append(pageButton);
             }
 
-            setProducts(filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+            setProducts(filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage *
+                itemsPerPage));
 
         }
 
-        $('#searchInput').on('input', function () {
+        $('#searchInput').on('input', function() {
             filterProducts($(this).val());
             if ($(this).val() === '') {
                 allProducts = [];
@@ -215,7 +221,8 @@
         async function advancedSearch() {
             let query = $('#searchInput').val();
 
-            const response = await fetch(`http://localhost/nextgen-parts/admin/api/product_manage.php?t=f&q=${query}`);
+            const response = await fetch(
+                `http://localhost/nextgen-parts/admin/api/product_manage.php?t=f&q=${query}`);
             const data = await response.json();
 
             if (data.status === 'success' && data.data && data.data.length > 0) {
@@ -230,7 +237,51 @@
         }
 
     });
-</script>
+
+    // Add to cart
+    async function addToCart(productId) {
+        const localStorage = window.localStorage;
+        if (!localStorage) {
+            swal({
+                title: "Error",
+                text: "Local storage is not supported in this browser.",
+                icon: "error",
+                button: "OK",
+            });
+            return;
+        } else {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (!cart) {
+                cart = [];
+            }
+
+            const productIndex = cart.findIndex(item => item.id === productId);
+            if (productIndex !== -1) {
+                cart[productIndex].quantity += 1;
+            } else {
+                const product = allProducts.find(item => item.id === productId);
+                if (product) {
+                    cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1,
+                        image: product.images[0]
+                    });
+                }
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            swal({
+                title: "Success",
+                text: "Product added to cart successfully.",
+                icon: "success",
+                button: "OK",
+            });
+        }
+
+
+    }
+    </script>
 </body>
 
 </html>
