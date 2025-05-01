@@ -5,151 +5,199 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-<div class="bg-white p-10 rounded-lg shadow-lg w-full max-w-3xl">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-10">Add New Product</h1>
-    <div class="space-y-6">
-        <div>
-            <label for="pName" class="block text-gray-700 font-semibold mb-2">Product Name</label>
-            <input
-                    type="text"
-                    id="pName"
-                    name="name"
-                    placeholder="Enter product name"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            >
+<body>
+    <div class="w-full h-screen flex gap-2 p-1 relative">
+
+        <!--Sidebar Nav-->
+        <div class="w-1/6 p-4 rounded-lg border-r relative">
+            <div>
+                <h2 class="text-xl font-bold mb-4">Admin Dashboard</h2>
+
+                <ul class="space-y-2 w-full">
+
+                    <li class="w-full">
+                        <button
+                            class="w-full flex items-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300 bg-gray-100"
+                            data-page="home">
+                            <i class="bi bi-house-door"></i>
+                            <span class="ml-2">Dashboard</span>
+                        </button>
+                    </li>
+
+                    <li class="w-full">
+                        <button
+                            class="w-full flex items-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                            data-page="users">
+                            <i class="bi bi-person"></i>
+                            <span class="ml-2">Users</span>
+                        </button>
+                    </li>
+
+
+                    <li class="w-full">
+                        <button
+                            class="w-full flex items-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                            data-page="products">
+                            <i class="bi bi-box"></i>
+                            <span class="ml-2">Products</span>
+                        </button>
+                    </li>
+
+
+                    <li class="w-full">
+                        <button
+                            class="w-full flex items-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                            data-page="orders">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span class="ml-2">Orders</span>
+                        </button>
+                    </li>
+
+                    <li class="w-full">
+                        <button
+                            class="w-full flex items-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                            data-page="contact">
+                            <i class="bi bi-graph-up-arrow"></i>
+                            <span class="ml-2">Contact Forms</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="absolute bottom-0 left-0 w-full p-4">
+                <h2 class="text-lg font-bold mb-4">Account</h2>
+                <ul class="space-y-2 w-full">
+                    <li class="w-full flex gap-2 items-center justify-center">
+                        <div class="w-full">
+                            <button
+                                class="w-full flex items-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="ml-2">Profile</span>
+                            </button>
+                        </div>
+                        <div class="w-fit">
+                            <button
+                                class="w-full bg-red-100 text-red-600 rounded-lg p-3 hover:bg-red-200 transition duration-300">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="w-full">
+                        <button
+                            class="w-full flex items-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300">
+                            <i class="bi bi-question-circle"></i>
+                            <span class="ml-2">Help</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <div>
-            <label for="pDescription" class="block text-gray-700 font-semibold mb-2">Product Description</label>
-            <textarea
-                    id="pDescription"
-                    name="description"
-                    placeholder="Enter product description"
-                    rows="4"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            ></textarea>
+        <!--Main Content-->
+        <div class="w-full overflow-y-auto">
+
+            <!--Dashboard Main Content-->
+            <div class="w-full h-full bg-red-100 hidden" id="home">
+                Dashboard Content
+            </div>
+
+            <!--Users-->
+            <div class="w-full h-full bg-red-200 hidden" id="users">
+                Users Content
+            </div>
+
+            <!--Products-->
+            <div class="w-full h-full hidden" id="products">
+                <div class="w-full h-fit flex items-center justify-center p-10 gap-10 sticky bg-white top-0">
+                    <button
+                        class="w-full flex items-center justify-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                        id="productsAddBtn">
+                        <i class="bi bi-plus-circle"></i>
+                        <span class="ml-2">Add Products</span>
+                    </button>
+                    <button
+                        class="w-full flex items-center justify-center p-2 px-4 rounded-lg hover:bg-gray-800 hover:text-white transition duration-300"
+                        id="productsUpdateBtn">
+                        <i class="bi bi-pencil-square"></i>
+                        <span class="ml-2">Update Products</span>
+                    </button>
+                </div>
+                <div id="productsAddContent" class="flex items-center justify-center">
+                    <?php require_once 'components/add_products.php'; ?>
+                </div>
+                <div id="productsUpdateContent" class="flex items-center justify-center">
+                    <?php require_once 'components/update_products.php'; ?>
+                </div>
+            </div>
+
+            <!--Orders-->
+            <div class="w-full h-full bg-red-400 hidden" id="orders">
+                Orders Content
+            </div>
+
+            <!--Contact Forms-->
+            <div class="w-full h-full bg-red-500 hidden" id="contact">
+                Contact Forms Content
+            </div>
+
         </div>
 
-        <div>
-            <label for="pPrice" class="block text-gray-700 font-semibold mb-2">Product Price</label>
-            <input
-                    type="text"
-                    id="pPrice"
-                    name="price"
-                    placeholder="Enter product price"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            >
-        </div>
-
-        <div>
-            <label for="pImage" class="block text-gray-700 font-semibold mb-2">Product Images</label>
-            <input
-                    type="file"
-                    id="pImage"
-                    name="image"
-                    multiple
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            >
-            <div id="imagePreview" class="flex flex-wrap gap-4 mt-4"></div>
-        </div>
-
-        <div class="flex justify-center">
-            <button
-                    id="pSubmitBtn"
-                    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-8 rounded-md transition duration-300"
-            >
-                Submit Product
-            </button>
-        </div>
     </div>
-</div>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        let images = [];
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
 
-        $("#pImage").change(async function () {
-            const files = $(this)[0].files;
-            const convertedImages = await imageConvertor(files);
-            images = images.concat(convertedImages);
-            renderImages();
+        // Defaults
+        // Show the home page by default
+        function defaultPage() {
+            $('#products').show();
+            $('#productsAddBtn').addClass('bg-gray-100');
+            $('#productsUpdateBtn').removeClass('bg-gray-100');
+            $('#productsUpdateContent').hide();
+            $('#productsAddContent').show();
+        }
+        defaultPage();
+
+        // Handle sidebar button clicks
+        $('button[data-page]').on('click', function() {
+            const page = $(this).data('page');
+
+            // Remove active class and disable from all buttons
+            $('button[data-page]').removeClass('bg-gray-100');
+
+            // Add active class to the clicked button
+            $(this).addClass('bg-gray-100');
+
+            // Hide all pages
+            $('.w-full.h-full').hide();
+
+            // Show the selected page
+            $('#' + page).show();
         });
 
-        function renderImages() {
-            $("#imagePreview").empty();
-            images.forEach((imgSrc, git index) => {
-                $("#imagePreview").append(`
-                    <div class="relative w-24 h-24">
-                        <img src="${imgSrc}" class="w-full h-full object-cover rounded-md"  alt="Product Image ${index + 1}">
-                        <button class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center" onclick="removeImage(${index})">×</button>
-                    </div>
-                `);
-            });
-        }
-
-        window.removeImage = function (index) {
-            images.splice(index, 1);
-            renderImages();
-        }
-
-        $('#pSubmitBtn').click(async () => {
-            const productDetails = {
-                name: $('#pName').val(),
-                description: $('#pDescription').val(),
-                price: $('#pPrice').val(),
-                images: images
-            }
-
-            const result = await fetch('http://localhost/nextgen-parts/admin/api/product_manage.php?t=i', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(productDetails)
-            });
-
-            const data = await result.json();
-
-            if (data.status === 'success') {
-                swal("Success!", "Product Inserted Successfully!", "success");
-                $('#pName').val('');
-                $('#pDescription').val('');
-                $('#pPrice').val('');
-                $('#pImage').val('');
-                images = [];
-                renderImages();
-            } else {
-                swal("Error!", "Product Insertion Failed!", "error");
-            }
+        // Handle Add Products button click
+        $('#productsAddBtn').on('click', function() {
+            $(this).addClass('bg-gray-100');
+            $('#productsUpdateBtn').removeClass('bg-gray-100');
+            $('#productsUpdateContent').hide();
+            $('#productsAddContent').show();
+        });
+        // Handle Update Products button click
+        $('#productsUpdateBtn').on('click', function() {
+            $(this).addClass('bg-gray-100');
+            $('#productsAddBtn').removeClass('bg-gray-100');
+            $('#productsAddContent').hide();
+            $('#productsUpdateContent').show();
         });
 
-        async function imageConvertor(imageData) {
-            let convertedImages = [];
-            for (let i = 0; i < imageData.length; i++) {
-                const file = imageData[i];
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function () {
-                    convertedImages.push(reader.result);
-                }
-            }
-            await new Promise((resolve) => {
-                const interval = setInterval(() => {
-                    if (convertedImages.length === imageData.length) {
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, 100);
-            });
-            return convertedImages;
-        }
     });
-</script>
+    </script>
 </body>
+
 </html>
