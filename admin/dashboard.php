@@ -130,7 +130,7 @@
                     <?php require_once 'components/add_products.php'; ?>
                 </div>
                 <div id="productsUpdateContent" class="flex items-center justify-center">
-                    <?php require_once 'components/update_products.php'; ?>
+                    <?php require_once 'components/products/manage_products.php'; ?>
                 </div>
             </div>
 
