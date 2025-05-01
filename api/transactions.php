@@ -1,5 +1,8 @@
 <?php
 
+require '../vendor/autoload.php';
+require './utils/JwtHelper.php';
+
 $data = json_decode(file_get_contents('php://input'), true);
 
 require '../utils/db.php';
@@ -8,9 +11,56 @@ $req_method = $_SERVER['REQUEST_METHOD'];
 
 // check the action is POST
 if ($req_method == 'POST') {
+    $jwt = null;
 
-    $userId = $data['user_id'] ?? null;
-    $products = $data['products'] ?? null;
+    $headers = getallheaders();
+    if (isset($headers['Authorization'])) {
+        $matches = [];
+        preg_match('/Bearer\s(\S+)/', $headers['Authorization'], $matches);
+        if (count($matches) > 1) {
+            $jwt = $matches[1];
+        }
+    }
+
+    if ($jwt == null) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'No token provided'
+        ]);
+        exit();
+    }
+
+    // Decode the token
+    $jwtHelper = new JwtHelper();
+    $decoded = $jwtHelper->decodeToken($jwt);
+
+    if (!$decoded->exp || !$decoded->iat || !$decoded->data) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Invalid token'
+        ]);
+        exit();
+    }
+    // Check if the token is expired
+    if ($decoded->exp < time()) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Token expired'
+        ]);
+        exit();
+    }
+    
+    // Check User ID
+    if (!$decoded->data->id || $decoded->data->id == null || empty($decoded->data->id)) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'No user ID provided'
+        ]);
+        exit();
+    }
+    
+    $userId = $decoded->data->id;
+    $products = $data;
 
     $totalPrice = 0;
 
@@ -64,8 +114,8 @@ if ($req_method == 'POST') {
 
         // Insert the transaction into the database
         $transactionId = uniqid();
-        $query = "INSERT INTO transactions (id,total) VALUES (:transaction_id, :total_price)";
-        $stmt = Database::iud($query, [':transaction_id' => $transactionId, ':total_price' => $totalPrice]);
+        $query = "INSERT INTO transactions (id,total,users_id) VALUES (:transaction_id, :total_price, :user_id)";
+        $stmt = Database::iud($query, [':transaction_id' => $transactionId, ':total_price' => $totalPrice, ':user_id' => $userId]);
         if (!$stmt) {
             echo json_encode([
                 'status' => 'error',

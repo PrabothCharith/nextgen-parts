@@ -36,6 +36,70 @@
 
     $(document).ready(function() {
 
+        $('#checkout').click(async function() {
+            if (cartItems.length === 0) {
+                swal({
+                    title: "Empty Cart",
+                    text: "Your cart is empty.",
+                    icon: "info",
+                    button: "OK",
+                });
+                return;
+            } else {
+
+                let token = '';
+
+                if (document.cookie.split('jwt=')[1] !== undefined) {
+                    token = document.cookie.split('jwt=')[1].split(';')[0];
+                }
+
+                try {
+                    const response = await fetch('http://localhost/nextgen-parts/api/transactions.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify(cartItems)
+                    });
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        swal({
+                            title: "Success",
+                            text: "Your order has been placed successfully.",
+                            icon: "success",
+                            button: "OK",
+                        }).then(() => {
+                            localStorage.removeItem('cart');
+                            cartItems = [];
+                            renderCart();
+                        });
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: data.message,
+                            icon: "error",
+                            button: "OK",
+                        });
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    swal({
+                        title: "Error",
+                        text: "An error occurred while processing your request.",
+                        icon: "error",
+                        button: "OK",
+                    });
+                }
+            }
+        });
+
         function loadCart() {
             if (!localStorage) {
                 swal({
